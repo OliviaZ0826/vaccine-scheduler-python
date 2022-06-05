@@ -299,25 +299,6 @@ def reserve(tokens):
     if len(tokens) != 3:
         print("Please try again!")
         return
-    
-    vaccine_name = tokens[2].lower()
-    vaccine = None
-    try:
-        vaccine = Vaccine(vaccine_name, 0).get()
-    except pymssql.Error as e:
-        print("Db-Error:", e)
-        quit()
-    except Exception as e:
-        print("Error:", e)
-        print("Please try again!")
-        return
-    
-    if vaccine is None:
-        print("No such vaccine exist!")
-        return
-    if vaccine.get_available_doses() == 0:
-        print("Not enough available doses!")
-        return
 
     date = tokens[1].lower()
     # assume input is hyphenated in the format mm-dd-yyyy
@@ -350,6 +331,25 @@ def reserve(tokens):
         return
     finally:
         cm.close_connection()
+
+    vaccine_name = tokens[2].lower()
+    vaccine = None
+    try:
+        vaccine = Vaccine(vaccine_name, 0).get()
+    except pymssql.Error as e:
+        print("Db-Error:", e)
+        quit()
+    except Exception as e:
+        print("Error:", e)
+        print("Please try again!")
+        return
+    
+    if vaccine is None:
+        print("No such vaccine exist!")
+        return
+    if vaccine.get_available_doses() == 0:
+        print("Not enough available doses!")
+        return
 
     conn = cm.create_connection()
     cursor = conn.cursor()
