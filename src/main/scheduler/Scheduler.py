@@ -322,6 +322,7 @@ def reserve(tokens):
             caregiver = row[0]
     except ValueError:
         print("Please try again!")
+        return
     except pymssql.Error as e:
         print("TOP 1")
         print("Db-Error:", e)
